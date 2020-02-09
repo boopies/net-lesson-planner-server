@@ -3,7 +3,7 @@ CREATE TABLE net_activities (
     title TEXT NOT NULL,
     content TEXT NOT NULL,
     duration TEXT NOT NULL,
-    group TEXT NOT NULL,
+    grouping TEXT NOT NULL,
     category_id INTEGER REFERENCES net_categories(id) ON DELETE CASCADE NOT NULL,
     user_id INTEGER REFERENCES net_users(id) NOT NULL
 );

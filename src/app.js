@@ -5,7 +5,10 @@ const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
 const categoriesRouter = require('./categories/categories-router')
-const activitiesRouter = require('./activities/activity-router.js')
+const activitiesRouter = require('./activities/activities-router.js')
+const savedlessonsRouter = require('./savedlessons/savedlessons-router')
+const authRouter = require('./auth/auth-router')
+const usersRouter = require('./users/users-router')
 
 const app = express()
 
@@ -17,17 +20,11 @@ app.use(morgan(morganOption))
 app.use(helmet())
 app.use(cors())
 
-app.use('/api/categories', cateogriesRouter)
+app.use('/api/categories', categoriesRouter)
 app.use('/api/activities', activitiesRouter)
-
-app.get('/', (req, res) => {
-    res.send('Hello, world!')
-})
-
-app.get('/xss', (req, res) => {
-    res.cookie('secretToken', '1234567890');
-    res.sendFile(__dirname + '/xss-example.html');
-  });
+app.use('/api/savedlessons', savedlessonsRouter)
+app.use('/api/auth', authRouter)
+app.use('/api/users', usersRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response

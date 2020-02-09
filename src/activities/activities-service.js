@@ -1,6 +1,8 @@
 const ActivitiesService = {
     getAllActivities(knex) {
-      return knex.select('*').from('net_activities')
+      return knex
+        .select('*')
+        .from('net_activities')
     },
   
     insertActivity(knex, newActivity) {
