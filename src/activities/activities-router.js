@@ -11,17 +11,17 @@ const serializeActivity = activity => ({
   id: activity.id,
   title: xss(activity.title),
   content: xss(activity.content),
-  category_id: activity.category_id,
   duration: activity.duration,
   grouping: activity.grouping,
+  category_id: activity.category_id,
   user_id: activity.user_id,
+  date_created: activity.date_created,
 })
 
 activitiesRouter
   .route('/')
   .get((req, res, next) => {
-    const knexInstance = req.app.get('db')
-    ActivitiesService.getAllActivities(knexInstance)
+    ActivitiesService.getAllActivities(req.app.get('db'))
       .then(activities => {
         res.json(activities.map(serializeActivity))
       })
@@ -31,13 +31,15 @@ activitiesRouter
     const { title, content, category_id, duration, grouping, user_id} = req.body
     const newActivity = { title, content, category_id, duration, grouping, user_id}
 
+    newActivity.user_id = req.user.id
+
     for (const [key, value] of Object.entries(newActivity))
       if (value == null)
         return res.status(400).json({
           error: { message: `Missing '${key}' in request body` }
         })
 
-        newActivity.user_id = req.user.id
+    newActivity.user_id = req.user.id
     
     ActivitiesService.insertActivity(
       req.app.get('db'),

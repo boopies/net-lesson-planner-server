@@ -9,15 +9,21 @@ const jsonBodyParser = express.json()
 
 const serializeUser = user => ({
   id: user.id,
-  user_id: user.user_name,
-  email: user.email,
+  username: user.username,
 })
 
 usersRouter
+  .get('/', (req, res, next) => {
+      UsersService.getUsers(req.app.get('db'))
+        .then(users => {
+          res.json(users.map(serializeUser))
+        })
+    .catch(next)
+  })
   .post('/', jsonBodyParser, (req, res, next) => {
-    const { password, user_name, email } = req.body
+    const { password, username, email } = req.body
 
-    for (const field of ['email', 'user_name', 'password'])
+    for (const field of ['email', 'username', 'password'])
       if (!req.body[field])
         return res.status(400).json({
           error: `Missing '${field}' in request body`
@@ -31,17 +37,15 @@ usersRouter
 
       UsersService.hasUserWithUserName(
         req.app.get('db'),
-        user_name)
+        username)
 
-    UsersService.hasUserWithEmail(
+        UsersService.hasUserWithEmail(
           req.app.get('db'),
           email)
       .then(hasUserWithEmail => {
           if (hasUserWithEmail)
         return res.status(400).json({ error: `Email already taken` })
       })
-
-
       .then(hasUserWithUserName => {
         if (hasUserWithUserName)
           return res.status(400).json({ error: `Username already taken` })
@@ -49,7 +53,7 @@ usersRouter
         return UsersService.hashPassword(password)
           .then(hashedPassword => {
             const newUser = {
-              user_name,
+              username,
               password: hashedPassword,
               email,
             }
@@ -70,7 +74,7 @@ usersRouter
     
 usersRouter
       .route('/:username')
-      .all(requireAuth, jsonBodyParser, (req, res, next) => {
+      .all(jsonBodyParser, (req, res, next) => {
         UsersService.getUserWithUserName(
           req.app.get('db'),
           req.params.username
@@ -89,6 +93,16 @@ usersRouter
       .get((req, res, next) => {
         res.json(serializeUser(res.user))
       })
+
+usersRouter
+      .route('/:username')
+      .get((req, res, next) =>{
+        UsersService.getUserWithUserName(
+          req.app.get('db'),
+          req.params.username)
+        res.json(serializeUser(res.user))
+      .catch(next)
+    })
 
 
 module.exports = usersRouter

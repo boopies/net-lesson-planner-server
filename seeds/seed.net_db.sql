@@ -1,5 +1,56 @@
+BEGIN;
+
+
+    INSERT INTO net_users( username, email, password )
+VALUES
+    ('admin', 'admin@admin', '$2a$12$jYBgjmooGLO5NWg8L.SBO.h1eU.6HCfhFHPf8uww9Zy2uySNNa3mG'),
+    ('dunder', 'Dunder@gmail.com', '$2a$12$lHK6LVpc15/ZROZcKU00QeiD.RyYq5dVlV/9m4kKYbGibkRc5l4Ne'),
+    ('b.deboop', 'Bodeep@gmail.comp', '$2a$12$VQ5HgWm34QQK2rJyLc0lmu59cy2jcZiV6U1.bE8rBBnC9VxDf/YQO'),
+    ('c.bloggs', 'Charlie@gmail.com', '$2a$12$2fv9OPgM07xGnhDbyL6xsuAeQjAYpZx/3V2dnu0XNIR27gTeiK2gK'),
+    ('s.smith', 'Sam@gmail.com', '$2a$12$/4P5/ylaB7qur/McgrEKwuCy.3JZ6W.cRtqxiJsYCdhr89V4Z3rp.'),
+    ('lexlor', 'Alex@gmail.com', '$2a$12$Hq9pfcWWvnzZ8x8HqJotveRHLD13ceS7DDbrs18LpK6rfj4iftNw.'),
+    ('wippy', 'Ping@gmail.com', '$2a$12$ntGOlTLG5nEXYgDVqk4bPejBoJP65HfH2JEMc1JBpXaVjXo5RsTUu');
+    
+INSERT INTO net_categories ( title )
+VALUES
+    ('Warmup'),
+    ('Presentation'),
+    ('Practice'),
+    ('Production'),
+    ('Cooldown');
+
 INSERT INTO net_activities (title, content, category_id, duration, grouping, user_id)
 VALUES
+    ('Choose a Warm-up Activity',
+    ' ',
+    1,
+    ' ',
+    ' ',
+    1),
+    ('Choose a Presentation Activity',
+    ' ',
+    2,
+    ' ',
+    ' ',
+    1),
+    ('Choose a Practice Activity',
+    ' ',
+    3,
+    ' ',
+    ' ',
+    1),
+    ('Choose a Production Activity',
+    ' ',
+    4,
+    ' ',
+    ' ',
+    1),
+    ('Choose a Cooldown Activity',
+    ' ',
+    5,
+    ' ',
+    ' ',
+    1),
     ('Blank Warmup',
     '_________________________________________________________________________\n \r_________________________________________________________________________\n \r_________________________________________________________________________\n \r_________________________________________________________________________',
     1,
@@ -181,3 +232,65 @@ VALUES
     'Whole Class',
     1);
 
+
+INSERT INTO net_savedlessons (user_id, title, date, day, classlevel, period, topic, goal, class_size, 
+                            objective_one, objective_two, objective_three, materials, warmup_id, 
+                            presentation_one_id, presentation_two_id, practice_one_id, practice_two_id,
+                            practice_three_id, product_one_id, product_two_id, cooldown_id, reflection_one, reflection_two,
+                            reflection_three, duration)
+VALUES (
+    1,
+    'Sample Lesson Plan (Some inputs filled)',
+    '2020/02/10',
+    'Wednesday',
+    'Junior High 1st Year',
+    'Period 03',
+    'I can ...',
+    'The goal of the lesson is for student to be able to use I can ~',
+    23,
+    'Use I can to describe things they can do.',
+    '',
+    '',
+    'Textbook,Worksheets,Props',
+    11,
+    16,
+    7,
+    21,
+    24,
+    3,
+    26,
+    4,
+    35,
+    'Did the students enjoy the lesson?',
+    'Did the studnets understand how to use I can?',
+    '',
+    '50 mins'),
+    (
+    1,
+    'Blank Lesson Plan',
+    '2020/02/10',
+    'Wednesday',
+    'Junior High 1st Year',
+    'Period 03',
+    'I can ...',
+    'The goal of the lesson is for student to be able to ______________________________________',
+    40,
+    '______________________________________',
+    '______________________________________',
+    '______________________________________',
+    'Textbook,Worksheets,Props',
+    6,
+    7,
+    7,
+    8,
+    8,
+    8,
+    9,
+    9,
+    10,
+    '______________________________________',
+    '______________________________________',
+    '______________________________________',
+    '45 mins');
+
+COMMIT;

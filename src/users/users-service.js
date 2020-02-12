@@ -4,9 +4,9 @@ const xss = require('xss')
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/
 
 const UsersService = {
-  hasUserWithUserName(db, user_name) {
+  hasUserWithUserName(db, username) {
     return db('net_users')
-      .where({ user_name })
+      .where({ username })
       .first()
       .then(user => !!user)
   },
@@ -44,7 +44,7 @@ const UsersService = {
   serializeUser(user) {
     return {
       id: user.id,
-      user_name: xss(user.user_name),
+      username: xss(user.username),
       email: xss(user.email),
     }
   },
@@ -52,8 +52,11 @@ const UsersService = {
       return knex
         .from('net_users')
         .select('*')
-        .where( 'user_name', username )
+        .where( 'username', username )
         .first()
+    },
+    getUsers(knex) {
+      return knex.select('*').from('net_users')
     },
 }
 

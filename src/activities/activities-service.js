@@ -1,8 +1,6 @@
 const ActivitiesService = {
-    getAllActivities(knex) {
-      return knex
-        .select('*')
-        .from('net_activities')
+    getAllActivities(db) {
+      return db.select('*').from('net_activities')
     },
   
     insertActivity(knex, newActivity) {
@@ -34,6 +32,5 @@ const ActivitiesService = {
         .where({ id })
         .update(newActivityFields)
     },
-  }
-  
+}
   module.exports = ActivitiesService

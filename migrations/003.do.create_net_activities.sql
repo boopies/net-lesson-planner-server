@@ -5,5 +5,7 @@ CREATE TABLE net_activities (
     duration TEXT NOT NULL,
     grouping TEXT NOT NULL,
     category_id INTEGER REFERENCES net_categories(id) ON DELETE CASCADE NOT NULL,
-    user_id INTEGER REFERENCES net_users(id) NOT NULL
+    user_id INTEGER REFERENCES net_users(id),
+    date_created TIMESTAMP DEFAULT now() NOT NULL,
+    date_modified TIMESTAMP
 );
