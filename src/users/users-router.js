@@ -38,14 +38,6 @@ usersRouter
       UsersService.hasUserWithUserName(
         req.app.get('db'),
         username)
-
-        UsersService.hasUserWithEmail(
-          req.app.get('db'),
-          email)
-      .then(hasUserWithEmail => {
-          if (hasUserWithEmail)
-        return res.status(400).json({ error: `Email already taken` })
-      })
       .then(hasUserWithUserName => {
         if (hasUserWithUserName)
           return res.status(400).json({ error: `Username already taken` })
@@ -93,16 +85,5 @@ usersRouter
       .get((req, res, next) => {
         res.json(serializeUser(res.user))
       })
-
-usersRouter
-      .route('/:username')
-      .get((req, res, next) =>{
-        UsersService.getUserWithUserName(
-          req.app.get('db'),
-          req.params.username)
-        res.json(serializeUser(res.user))
-      .catch(next)
-    })
-
 
 module.exports = usersRouter

@@ -10,12 +10,6 @@ const UsersService = {
       .first()
       .then(user => !!user)
   },
-  hasUserWithEmail(db, email) {
-    return db('net_users')
-      .where({ email })
-      .first()
-      .then(email => !!email)
-  },
   insertUser(db, newUser) {
     return db
       .insert(newUser)
