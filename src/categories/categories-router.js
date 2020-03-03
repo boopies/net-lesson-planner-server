@@ -22,7 +22,9 @@ categoriesRouter
       })
       .catch(next)
   })
-  .post(jsonParser, (req, res, next) => {
+
+//This is not used. Put in for future use
+/*  .post(jsonParser, (req, res, next) => {
     const { title } = req.body
     const newCategory = { title }
 
@@ -43,6 +45,7 @@ categoriesRouter
       })
       .catch(next)
   })
+*/
 
 categoriesRouter
   .route('/:category_id')
@@ -54,7 +57,7 @@ categoriesRouter
       .then(category => {
         if (!category) {
           return res.status(404).json({
-            error: { message: `Category doesn't exist` }
+            error: `Category does not exist`
           })
         }
         res.category = category // save the category for the next middleware
@@ -65,6 +68,9 @@ categoriesRouter
   .get((req, res, next) => {
     res.json(serializeCategory(res.category))
       })
+
+//For future use.      
+/*
   .delete((req, res, next) => {
     CategoriesService.deleteCategory(
         req.app.get('db'),
@@ -96,6 +102,6 @@ categoriesRouter
           })
           .catch(next)     
         })
-   
+  */
 
 module.exports = categoriesRouter

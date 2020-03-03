@@ -74,7 +74,7 @@ usersRouter
           .then(user=> {
             if (!user) {
               return res.status(404).json({
-                error: `User doesn't exist`
+                error: `User does not exist`
               })
             }
             res.user = user

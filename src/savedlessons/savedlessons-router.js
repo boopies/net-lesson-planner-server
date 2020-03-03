@@ -34,6 +34,7 @@ const serializeSavedlesson = savedlesson => ({
   reflection_one: savedlesson.reflection_one, 
   reflection_two: savedlesson.reflection_two,
   reflection_three: savedlesson.reflection_three,
+  date_created: savedlesson.date_created,
 })
 
 savedlessonsRouter
@@ -56,9 +57,10 @@ savedlessonsRouter
       objective_one, objective_two, objective_three, materials, warmup_id, 
       presentation_one_id, presentation_two_id, practice_one_id, practice_two_id,
       practice_three_id, product_one_id, product_two_id, cooldown_id, reflection_one, reflection_two,
-      reflection_three }
+      reflection_three, date_created }
 
-    newSavedlesson.user_id = req.user.id    
+    newSavedlesson.user_id = req.user.id
+    newSavedlesson.date_created = new Date ()    
 
     for (const [key, value] of Object.entries(newSavedlesson))
       if (value == null)
@@ -89,7 +91,7 @@ savedlessonsRouter
       .then(savedlesson => {
         if (!savedlesson) {
           return res.status(404).json({
-            error: { message: `Saved Lesson doesn't exist` }
+            error: 'Saved lesson does not exist'
           })
         }
         res.savedlesson = savedlesson
@@ -100,7 +102,7 @@ savedlessonsRouter
   .get(requireAuth, (req, res, next) => {
     res.json(serializeSavedlesson(res.savedlesson))
   })
-  .delete(jsonParser, (req, res, next) => {
+  .delete(requireAuth, jsonParser, (req, res, next) => {
     SavedlessonsService.deleteSavedlesson(
       req.app.get('db'),
       req.params.savedlesson_id
@@ -110,20 +112,22 @@ savedlessonsRouter
       })
       .catch(next)
   })
-  .patch(jsonParser, (req, res, next) => {
-    const { user_id, title, date, duration, day, classlevel, period, topic, goal, class_size, 
+  .patch(requireAuth, jsonParser, (req, res, next) => {
+    const { id, user_id, title, date, duration, day, classlevel, period, topic, goal, class_size, 
       objective_one, objective_two, objective_three, materials, warmup_id, 
       presentation_one_id, presentation_two_id, practice_one_id, practice_two_id,
       practice_three_id, product_one_id, product_two_id, cooldown_id, reflection_one, reflection_two,
       reflection_three  } = req.body
-    const savedlessonToUpdate = { user_id, title, date, duration, day, classlevel, period, topic, goal, class_size, 
+    const savedlessonToUpdate = { id, user_id, title, date, duration, day, classlevel, period, topic, goal, class_size, 
       objective_one, objective_two, objective_three, materials, warmup_id, 
       presentation_one_id, presentation_two_id, practice_one_id, practice_two_id,
       practice_three_id, product_one_id, product_two_id, cooldown_id, reflection_one, reflection_two,
       reflection_three }
-    const savedlessonToUpdateReq = { user_id, title, date, duration, day, classlevel, period, topic, goal, class_size, 
+    const savedlessonToUpdateReq = { id, user_id, title, date, duration, day, classlevel, period, topic, goal, class_size, 
         objective_one, materials, warmup_id, presentation_one_id, 
         product_one_id, reflection_one }
+
+        savedlessonToUpdate.user_id = req.user.id
 
     const numberOfValues = Object.values(savedlessonToUpdateReq).filter(Boolean).length
     if (numberOfValues === 0)
