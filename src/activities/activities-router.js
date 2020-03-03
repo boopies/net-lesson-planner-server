@@ -30,17 +30,15 @@ activitiesRouter
   .post(requireAuth, jsonParser, (req, res, next) => {
     const { title, content, category_id, duration, grouping, user_id} = req.body
     const newActivity = { title, content, category_id, duration, grouping, user_id}
-
+    const newActivityReq = { title, content, category_id, duration, grouping, user_id}
     newActivity.user_id = req.user.id
 
-    for (const [key, value] of Object.entries(newActivity))
+    for (const [key, value] of Object.entries(newActivityReq))
       if (value == null)
         return res.status(400).json({
-          error: { message: `Missing '${key}' in request body` }
+          error: `Missing '${key}' in request body`
         })
 
-    newActivity.user_id = req.user.id
-    
     ActivitiesService.insertActivity(
       req.app.get('db'),
       newActivity
@@ -56,7 +54,6 @@ activitiesRouter
 
 activitiesRouter
   .route('/:activity_id')
-  .all(checkActivitiesExists)
   .all(jsonParser, (req, res, next) => {
     ActivitiesService.getById(
       req.app.get('db'),
@@ -65,7 +62,7 @@ activitiesRouter
       .then(activity => {
         if (!activity) {
           return res.status(404).json({
-            error: { message: `Activity doesn't exist` }
+            error: `Activity does not exist`
           })
         }
         res.activity = activity
@@ -76,6 +73,8 @@ activitiesRouter
   .get((req, res, next) => {
     res.json(serializeActivity(res.activity))
   })
+ //Option Available for future use
+  /* 
   .delete(requireAuth, (req, res, next) => {
     ActivitiesService.deleteActivity(
       req.app.get('db'),
@@ -86,6 +85,7 @@ activitiesRouter
       })
       .catch(next)
   })
+ */ 
   .patch(jsonParser, (req, res, next) => {
     const { title, content, category_id, duration, grouping, user_id } = req.body
     const activityToUpdate = { title, content, category_id, duration, grouping, user_id }
@@ -94,7 +94,7 @@ activitiesRouter
     if (numberOfValues === 0)
       return res.status(400).json({
         error: {
-          message: `Request body must contain either 'text', 'content', or a new 'folder_id'`
+          message: `Request body must contain a title, content, category_id, duration, grouping, user_id`
         }
       })
 
@@ -108,25 +108,5 @@ activitiesRouter
       })
       .catch(next)
   })
-
-/* async/await syntax for promises */
-async function checkActivitiesExists(req, res, next) {
-  try {
-    const activity = await ActivitiesService.getById(
-      req.app.get('db'),
-      req.params.activity_id
-    )
-
-    if (!activity)
-      return res.status(404).json({
-        error: `Activity doesn't exist`
-      })
-
-    res.activity = activity
-    next()
-  } catch (error) {
-    next(error)
-  }
-}
 
 module.exports = activitiesRouter

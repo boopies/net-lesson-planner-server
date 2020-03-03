@@ -57,15 +57,17 @@ savedlessonsRouter
       objective_one, objective_two, objective_three, materials, warmup_id, 
       presentation_one_id, presentation_two_id, practice_one_id, practice_two_id,
       practice_three_id, product_one_id, product_two_id, cooldown_id, reflection_one, reflection_two,
-      reflection_three, date_created }
+      reflection_three}
+    const newSavedlessonReq = { user_id, title, date, duration, day, classlevel, period, topic, goal, class_size, 
+        objective_one, warmup_id, presentation_one_id, practice_one_id, product_one_id, reflection_one }
 
     newSavedlesson.user_id = req.user.id
     newSavedlesson.date_created = new Date ()    
 
-    for (const [key, value] of Object.entries(newSavedlesson))
+    for (const [key, value] of Object.entries(newSavedlessonReq))
       if (value == null)
         return res.status(400).json({
-          error: { message: `Missing '${key}' in request body` }
+          error: `Missing '${key}' in request body` 
         })
 
     SavedlessonsService.insertSavedlesson(
@@ -90,8 +92,8 @@ savedlessonsRouter
     )
       .then(savedlesson => {
         if (!savedlesson) {
-          return res.status(404).json({
-            error: 'Saved lesson does not exist'
+          return res.status(401).json({
+            error: 'Lesson does not exist'
           })
         }
         res.savedlesson = savedlesson
@@ -133,9 +135,7 @@ savedlessonsRouter
     if (numberOfValues === 0)
       return res.status(400).json({
         error: {
-          message: `Request body must contain title, date, day, classlevel, period, topic, goal, class size, 
-          objective_one, materials, warmup_id, presentation_one_id, 
-          product_one_id, reflection_one`
+          message: `Request body must contain title, date, day, classlevel, period, topic, goal, class size, objective_one, materials, warmup_id, presentation_one_id, product_one_id, reflection_one`
         }
       })
 

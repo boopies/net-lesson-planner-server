@@ -65,7 +65,7 @@ function makeActivitiesArray(users, categories) {
       user_id: users[0].id,
       duration: '5min',
       grouping: 'Groups',
-      date_created: new Date(),
+      date_created: '2029-01-22T16:28:32.615Z',
       content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
     },
     {
@@ -75,7 +75,7 @@ function makeActivitiesArray(users, categories) {
         user_id: users[1].id,
         duration: '5min',
         grouping: 'Groups',
-        date_created: new Date(),
+        date_created: '2029-01-22T16:28:32.615Z',
         content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
       },
       {
@@ -85,7 +85,7 @@ function makeActivitiesArray(users, categories) {
         user_id: users[2].id,
         duration: '5min',
         grouping: 'Groups',
-        date_created: new Date(),
+        date_created: '2029-01-22T16:28:32.615Z',
         content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
       },
       {
@@ -95,7 +95,7 @@ function makeActivitiesArray(users, categories) {
         user_id: users[3].id,
         duration: '5min',
         grouping: 'Groups',
-        date_created: new Date(),
+        date_created: '2029-01-22T16:28:32.615Z',
         content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus consequuntur deserunt commodi, nobis qui inventore corrupti iusto aliquid debitis unde non.Adipisci, pariatur.Molestiae, libero esse hic adipisci autem neque ?',
       },
   ]
@@ -130,7 +130,7 @@ function makeSavedLessonsArray(users, activities) {
             reflection_one: 'test 01',
             reflection_two: 'test 01',
             reflection_three: 'test 01',
-            date_created: new Date(),
+            date_created: '2029-01-22T16:28:32.615Z',
   },
   {
         id: 2,
@@ -160,7 +160,7 @@ function makeSavedLessonsArray(users, activities) {
             reflection_one: 'test 02',
             reflection_two: 'test 02',
             reflection_three: 'test 02',
-        date_created: new Date(),
+    date_created: '2029-01-22T16:28:32.615Z',
     },
     {
       id: 3,
@@ -190,7 +190,7 @@ function makeSavedLessonsArray(users, activities) {
             reflection_one: 'test 03',
             reflection_two: 'test 03',
             reflection_three: 'test 03',
-      date_created: new Date(),
+    date_created: '2029-01-22T16:28:32.615Z',
     },
     {
             id: 4,
@@ -220,7 +220,7 @@ function makeSavedLessonsArray(users, activities) {
             reflection_one: 'test 04',
             reflection_two: 'test 04',
             reflection_three: 'test 04',
-      date_created: new Date(),
+    date_created: '2029-01-22T16:28:32.615Z',
     }]
 }
 
@@ -311,8 +311,8 @@ function makeExpectedUser(user) {
 function makeActivitiesFixtures() {
   const testUsers = makeUsersArray()
   const testCategories = makeCategoriesArray()
-  const testActivities = makeActivitiesArray(testCategories, testUsers )
-  return { testUsers, testActivities, testCategories}
+  const testActivities = makeActivitiesArray( testUsers, testCategories )
+  return { testUsers, testCategories, testActivities}
 }
 
 function makeCategoriesFixtures() {
@@ -328,8 +328,8 @@ function makeUsersFixtures() {
 function makeSavedLessonsFixtures(){
   const testUsers = makeUsersArray()
   const testCategories = makeCategoriesArray()
-  const testActivities = makeActivitiesArray(testCategories, testUsers )
-  const testSavedLessons = makeSavedLessonsArray(testActivities, testUsers)
+  const testActivities = makeActivitiesArray(testUsers, testCategories)
+  const testSavedLessons = makeSavedLessonsArray(testUsers, testActivities)
   return { testSavedLessons, testUsers, testActivities, testCategories }
 }
 
@@ -384,17 +384,6 @@ function seedCategoriesTables(db, categories) {
       )
   }
 
-  function seedActivities(db, activities) {
-    return db.into('net_activities').insert(activities)
-      .then(() =>
-        // update the auto sequence to stay in sync
-        db.raw(
-          `SELECT setval('net_activities_id_seq', ?)`,
-          [activities[activities.length - 1].id],
-        )
-      )
-  }
-
 function seedActivitiesTables(db, users, categories, activities) {
   // use a transaction to group the queries and auto rollback on any failure
   return db.transaction(async trx => {
@@ -413,9 +402,7 @@ function seedActivitiesTables(db, users, categories, activities) {
   function seedSavedLessonsTables(db, users, categories, activities, savedlessons) {
     // use a transaction to group the queries and auto rollback on any failure
     return db.transaction(async trx => {
-      await seedUsers(trx, users)
-      await seedCategoriesTables(trx, categories)
-      await seedActivities(trx, activities)
+      await seedActivitiesTables(trx, users, categories, activities, activities)
       await trx.into('net_savedlessons').insert(savedlessons)
       // update the auto sequence to match the forced id values
       await trx.raw(
@@ -424,7 +411,6 @@ function seedActivitiesTables(db, users, categories, activities) {
              )
       })
     }
-
 
 
 function seedMaliciousActivity(db, user, activity) {
