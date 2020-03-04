@@ -1,26 +1,93 @@
-# Express Boilerplate!
+N.E.T Lesson Plan Server
+=========================
+Be Prepared in the Classroom
+-----------------------------
 
-This is a boilerplate project used for starting new projects!
+## Technologies
+* Node.js
+* JWT
 
-## Set up
+### Live Link
+https://net-lesson-planner-client.now.sh/
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+### Github Link - Client
+https://github.com/boopies/net-lesson-planner-client
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+### Github Link - Server
+https://github.com/boopies/net-lesson-planner-server
 
-## Scripts
+## API Info
+This is API to retreive information from the database held on the servers. 
+https://secret-hollows-53640.herokuapp.com
 
-Start the application `npm start`
+- /api/categories
+- /api/activities
+- /api/users
+- /api/auth
+- /api/savedlessons
 
-Start nodemon for the application `npm run dev`
+## Categories Endpoint
 
-Run the tests `npm test`
+The categories endpoint supports GET only.
 
-## Deploying
+Get all the categories
+- GET /api/categories
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+Get the name of one category
+- GET /api/categories/{category-id}
+
+## Activities Endpoint
+
+The Activities endpoint supports GET, POST, and PATCH.
+
+Get all the Activities
+- GET /api/activities
+
+Get a specific activity
+- GET /api/activities/{activity-id}
+
+Upload a new activity - This this is protected
+- POST /api/activities
+
+Update an exisitng - This this is protected
+- PATCH /api/activities/{activity-id}
+
+
+## SavedLessons Endpoint
+
+The Activities endpoint supports GET, DELETE, POST, and PATCH.
+
+Get all the Savedlessons
+- GET /api/savedlessons
+
+Get a specific activity - This endpoint is Protected
+- GET /api/savedlessons/{savedlesson-id}
+
+Upload a new activity - This is protected
+- POST /api/savedlessons
+
+Update an exisitng saved lesson - This this is protected
+- PATCH /api/savedlessons/{activity-id}
+
+Delete an exisitng - This this is protected
+- DELETE /api/savedlessons/{activity-id}
+
+## Users Endpoint
+
+The Activities endpoint supports GET, and POST.
+
+Get all the Users
+- GET /api/users
+
+Get a specific user info
+- GET /api/users/{username}
+
+Create a new user/
+- POST /api/user
+
+## Auth Endpoints
+
+The Auth endpoint supports POST and 
+
+Login and Create an bearer token
+-POST /api/auth/login

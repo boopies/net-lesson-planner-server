@@ -61,7 +61,6 @@ describe('Saved Lessons Endpoints', function() {
                 )
                 return supertest(app)
                   .get('/api/savedlessons')
-                  .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                   .expect(200, expectedSavedLessons)
               })
             })    
