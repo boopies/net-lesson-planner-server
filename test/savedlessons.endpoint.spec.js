@@ -228,16 +228,14 @@ describe('Saved Lessons Endpoints', function() {
                     )
                 })
             
-                const requiredFields = ['user_id', 'title', 'date', 'day', 'duration', 'classlevel',
+                const requiredFields = ['title', 'date', 'day', 'duration', 'classlevel',
                                         'period', 'topic', 'goal', 'class_size', 'objective_one',
                                         'warmup_id', 'presentation_one_id', 'practice_one_id', 'product_one_id',
                                         'reflection_one']
             
                 requiredFields.forEach(field => {
                   const testActivity = testActivities[0]
-                  const testUser = testUsers[0]
                   const newLesson = {
-                    user_id: testUser.id,
                     title: 'test new lesson',
                     date: 'test new lesson',
                     day: 'test new lesson',

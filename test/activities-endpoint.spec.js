@@ -162,15 +162,13 @@ describe('Activities Endpoints', function() {
           )
       })
   
-      const requiredFields = ['title', 'content', 'category_id', 'duration', 'grouping', 'user_id']
+      const requiredFields = ['title', 'content', 'category_id', 'duration', 'grouping']
   
       requiredFields.forEach(field => {
         const testCategory = testCategories[0]
-        const testUser = testUsers[0]
         const newActivity = {
           title: 'First test activity!',
           category_id: testCategory.id,
-          user_id: testUser.id,
           duration: 'test time',
           grouping: 'test groups',
           content: 'test Content',

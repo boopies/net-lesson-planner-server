@@ -58,7 +58,7 @@ savedlessonsRouter
       presentation_one_id, presentation_two_id, practice_one_id, practice_two_id,
       practice_three_id, product_one_id, product_two_id, cooldown_id, reflection_one, reflection_two,
       reflection_three}
-    const newSavedlessonReq = { user_id, title, date, duration, day, classlevel, period, topic, goal, class_size, 
+    const newSavedlessonReq = { title, date, duration, day, classlevel, period, topic, goal, class_size, 
         objective_one, warmup_id, presentation_one_id, practice_one_id, product_one_id, reflection_one }
 
     newSavedlesson.user_id = req.user.id

@@ -30,7 +30,7 @@ activitiesRouter
   .post(requireAuth, jsonParser, (req, res, next) => {
     const { title, content, category_id, duration, grouping, user_id} = req.body
     const newActivity = { title, content, category_id, duration, grouping, user_id}
-    const newActivityReq = { title, content, category_id, duration, grouping, user_id}
+    const newActivityReq = { title, content, category_id, duration, grouping}
     newActivity.user_id = req.user.id
 
     for (const [key, value] of Object.entries(newActivityReq))
@@ -38,6 +38,8 @@ activitiesRouter
         return res.status(400).json({
           error: `Missing '${key}' in request body`
         })
+
+        newActivity.user_id = req.user.id
 
     ActivitiesService.insertActivity(
       req.app.get('db'),
